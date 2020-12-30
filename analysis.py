@@ -47,7 +47,7 @@ def plot_submission_counts_per_day_of_the_year(submissions):
               submissions['entry_date'].dt.day]).count()
   plot = submission_counts.plot(kind='bar')
   plot.figure.set_size_inches(60, 30)
-  plot.figure.savefig('submission_counts_per_day_of_the_year.png', dpi=200)
+  plot.figure.savefig('results/submission_counts_per_day_of_the_year.png', dpi=200)
 
 # Read data
 submissions = read('data/cool_mini_or_not_submissions.csv')
@@ -64,11 +64,11 @@ eval('Comments', comments)
 
 # Értékelések eloszlása a beküldéseken:
 submissions[['vote_average']].hist(column='vote_average', bins=10)
-plt.savefig('vote_average_histogram.png', dpi=200)
+plt.savefig('results/vote_average_histogram.png', dpi=200)
 
 # Az adott értékelésű beküldéseket milyen gyakran nézték meg:
 submissions.plot.scatter(x='vote_average', y='view_count')
-plt.savefig('vote_average_view_count_scatter.png', dpi=200)
+plt.savefig('results/vote_average_view_count_scatter.png', dpi=200)
 
 # Exit
 sys.exit()
