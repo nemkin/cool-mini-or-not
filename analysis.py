@@ -91,4 +91,13 @@ def eval_mcw():
   print('---')
 
 
+table = pd.pivot_table( \
+          comments, \
+          values='vote', \
+          index='commenter_user_name', \
+          columns='entry_id', \
+          aggfunc=max)
 
+table.to_csv('pivot.csv', index=False)
+
+print(table)
