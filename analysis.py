@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 from collections import Counter
 pd.set_option('display.max_colwidth', 0)
 
-
 def read(path):
   df = pd.read_csv(path)
   df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=True)
@@ -29,6 +28,22 @@ def eval(name, df):
   #   print(col)
   #   print(df[col].unique())
 
+submissions = read('data/cool_mini_or_not_submissions.csv')
+comments = read('data/cool_mini_or_not_comments.csv')
+
+submissions['entry_date'] = pd.to_datetime(submissions['entry_date'], errors='coerce')
+comments['comment_date'] = pd.to_datetime(comments['comment_date'], errors='coerce')
+comments['vote'] = pd.to_numeric(comments['vote'], errors='coerce').fillna(0).astype(np.int64)
+
+eval('Submissions', submissions)
+eval('Comments', comments)
+
+joined = submissions \
+  .set_index('entry_id') \
+  .join(comments.set_index('entry_id'), lsuffix='_submissions', rsuffix='_comments')
+
+# Begin
+
 def most_common_words(df):
   results = Counter()
   remove_duplicates = lambda x: ''.join(ch for ch, _ in itertools.groupby(x))
@@ -41,7 +56,8 @@ def most_common_words(df):
   return results
 #    .apply(remove_duplicates) \
 
-def plot_submission_counts_per_day_of_the_year(submissions):
+def plot_submission_counts_per_day_of_the_year():
+  global submissions
   submission_counts = submissions['entry_date']\
     .groupby([submissions['entry_date'].dt.month, \
               submissions['entry_date'].dt.day]).count()
@@ -49,55 +65,30 @@ def plot_submission_counts_per_day_of_the_year(submissions):
   plot.figure.set_size_inches(60, 30)
   plot.figure.savefig('results/submission_counts_per_day_of_the_year.png', dpi=200)
 
-# Read data
-submissions = read('data/cool_mini_or_not_submissions.csv')
-comments = read('data/cool_mini_or_not_comments.csv')
+def other_plots():
+  # Értékelések eloszlása a beküldéseken:
+  submissions[['vote_average']].hist(column='vote_average', bins=10)
+  plt.savefig('results/vote_average_histogram.png', dpi=200)
+  # Az adott értékelésű beküldéseket milyen gyakran nézték meg:
+  submissions.plot.scatter(x='vote_average', y='view_count')
+  plt.savefig('results/vote_average_view_count_scatter.png', dpi=200)
+  # Az adott értékelésű beküldésekre milyen konkrét egyedi értékelések jöttek:
+  # joined.plot.scatter(x='vote_average', y='vote') # Float is bad
+  # Beküldések darabszáma kategóriánként:
+  submissions.groupby('category').count().plot.bar()
 
-# Fix type issues
-submissions['entry_date'] = pd.to_datetime(submissions['entry_date'], errors='coerce')
-comments['comment_date'] = pd.to_datetime(comments['comment_date'], errors='coerce')
-comments['vote'] = pd.to_numeric(comments['vote'], errors='coerce').fillna(0).astype(np.int64)
-
-# Print evaluations
-eval('Submissions', submissions)
-eval('Comments', comments)
-
-# Értékelések eloszlása a beküldéseken:
-submissions[['vote_average']].hist(column='vote_average', bins=10)
-plt.savefig('results/vote_average_histogram.png', dpi=200)
-
-# Az adott értékelésű beküldéseket milyen gyakran nézték meg:
-submissions.plot.scatter(x='vote_average', y='view_count')
-plt.savefig('results/vote_average_view_count_scatter.png', dpi=200)
-
-# Exit
-sys.exit()
-
-# Az adott értékelésű beküldésekre milyen konkrét egyedi értékelések jöttek:
-# joined.plot.scatter(x='vote_average', y='vote') # Float is bad
-
-# Beküldések darabszáma kategóriánként:
-submissions.groupby('category').count().plot.bar()
-
-
-# Most common words
-mca = most_common_words(comments)
-mcg = most_common_words(comments.loc[comments['vote']>5])
-mcb = most_common_words(comments.loc[comments['vote']<6])
-
-print('---')
-print(mca)
-print('---')
-print(mcg)
-print('---')
-print(mcb)
-print('---')
-
-
-joined = submissions \
-  .set_index('entry_id') \
-  .join(comments.set_index('entry_id'), lsuffix='_submissions', rsuffix='_comments')
-
+def eval_mcw():
+  # Most common words
+  mca = most_common_words(comments)
+  mcg = most_common_words(comments.loc[comments['vote']>5])
+  mcb = most_common_words(comments.loc[comments['vote']<6])
+  print('---')
+  print(mca)
+  print('---')
+  print(mcg)
+  print('---')
+  print(mcb)
+  print('---')
 
 
 
