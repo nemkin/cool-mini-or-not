@@ -97,7 +97,10 @@ table = pd.pivot_table( \
           index='commenter_user_name', \
           columns='entry_id', \
           aggfunc=max)
-
-table.to_csv('pivot.csv', index=False)
-
+# table.to_csv('pivot.csv', index=False)
 print(table)
+
+corr_tab = table.corr()
+table.to_csv('corr_pivot.csv', index=False)
+print(corr_tab)
+
