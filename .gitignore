@@ -132,3 +132,5 @@ dmypy.json
 results/
 .~lock*
 *.png
+corr_pivot.csv
+pivot.csv

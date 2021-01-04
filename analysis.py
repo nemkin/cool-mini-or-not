@@ -4,14 +4,16 @@ import unidecode as ud
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import json
+import operator
 from collections import Counter
 pd.set_option('display.max_colwidth', 0)
 
 def read(path):
   df = pd.read_csv(path)
   df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=True)
-  df.rename(columns={df.columns[0]: 'index'}, inplace=True)
-  df.drop(columns=['index'], inplace=True)
+#  df.rename(columns={df.columns[0]: 'index'}, inplace=True)
+#  df.drop(columns=['index'], inplace=True)
   return df
 
 def eval(name, df):
@@ -28,7 +30,8 @@ def eval(name, df):
   #   print(col)
   #   print(df[col].unique())
 
-submissions = read('data/cool_mini_or_not_submissions.csv')
+#submissions = read('data/cool_mini_or_not_submissions.csv')
+submissions = read('submissions_url_fixed.csv')
 comments = read('data/cool_mini_or_not_comments.csv')
 
 submissions['entry_date'] = pd.to_datetime(submissions['entry_date'], errors='coerce')
@@ -38,9 +41,9 @@ comments['vote'] = pd.to_numeric(comments['vote'], errors='coerce').fillna(0).as
 eval('Submissions', submissions)
 eval('Comments', comments)
 
-joined = submissions \
-  .set_index('entry_id') \
-  .join(comments.set_index('entry_id'), lsuffix='_submissions', rsuffix='_comments')
+# joined = submissions \
+#   .set_index('entry_id') \
+#   .join(comments.set_index('entry_id'), lsuffix='_submissions', rsuffix='_comments')
 
 # Begin
 
@@ -103,6 +106,19 @@ def eval_mcw():
 # corr_tab = table.corr()
 # corr_tab.to_csv('corr_pivot.csv', index=False)
 # print(corr_tab)
+
+#result = submissions.to_json(orient="index")
+#parsed = json.loads(result)
+#
+#new_parsed = {}
+#
+#for k in parsed:
+#  new_parsed[parsed[k]["entry_id"]] = parsed[k]
+#
+#a = json.dumps(new_parsed, indent=4)
+#
+#with open("submissions.json", "w") as text_file:
+#    text_file.write(a)
 
 corr_tab = pd.read_csv("data/corr_pivot.csv")
 print(corr_tab.head())
