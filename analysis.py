@@ -91,16 +91,19 @@ def eval_mcw():
   print('---')
 
 
-table = pd.pivot_table( \
-          comments, \
-          values='vote', \
-          index='commenter_user_name', \
-          columns='entry_id', \
-          aggfunc=max)
-# table.to_csv('pivot.csv', index=False)
-print(table)
+# table = pd.pivot_table( \
+#           comments, \
+#           values='vote', \
+#           index='commenter_user_name', \
+#           columns='entry_id', \
+#           aggfunc=max)
+# # table.to_csv('pivot.csv', index=False)
+# print(table)
+#
+# corr_tab = table.corr()
+# corr_tab.to_csv('corr_pivot.csv', index=False)
+# print(corr_tab)
 
-corr_tab = table.corr()
-corr_tab.to_csv('corr_pivot.csv', index=False)
-print(corr_tab)
+corr_tab = pd.read_csv("data/corr_pivot.csv")
+print(corr_tab.head())
 

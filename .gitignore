@@ -132,4 +132,3 @@ dmypy.json
 results/
 .~lock*
 *.png
-*.csv
