@@ -134,3 +134,6 @@ results/
 *.png
 corr_pivot.csv
 pivot.csv
+*.swp
+node_modules
+

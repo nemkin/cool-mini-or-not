@@ -9,7 +9,8 @@ from datetime import datetime as dt
 from lxml import html
 from lxml import etree
 
-location = "/home/nemkin/Mount/drive/Wayback" #Wget/www.coolminiornot.com"
+#location = "/home/nemkin/Mount/drive/Wayback"
+location = "/home/nemkin/Mount/drive/Wget/www.coolminiornot.com"
 index_file = "index.html"
 
 submissions = []
@@ -22,8 +23,7 @@ def strip(l):
 def get_entries():
   global location
   dirs = os.listdir(location)
-  entries = filter(lambda dir: dir.isnumeric(), dirs)
-  print(list(entries))
+  entries = list(filter(lambda dir: dir.isnumeric(), dirs))
   return entries
 
 def process_comments(file_path, entry_id, tree):
@@ -33,15 +33,15 @@ def process_comments(file_path, entry_id, tree):
 
   for comment_row in comment_rows:
     [commenter_td, comment_text_td] = comment_row.xpath('td')
-  
-    [commenter_url, *_] = commenter_td.xpath('.//a/@href') 
 
-    [comment_id] = comment_text_td.xpath('.//td[@class="comment_header_left"]/b/text()') 
+    [commenter_url, *_] = commenter_td.xpath('.//a/@href')
+
+    [comment_id] = comment_text_td.xpath('.//td[@class="comment_header_left"]/b/text()')
     try:
-      [vote] = comment_text_td.xpath('.//td[@class="comment_header_center"]/b/span/text()') 
+      [vote] = comment_text_td.xpath('.//td[@class="comment_header_center"]/b/span/text()')
     except ValueError:
       vote = ''
-    [comment_date] = comment_text_td.xpath('.//td[@class="comment_header_right"]/b/text()') 
+    [comment_date] = comment_text_td.xpath('.//td[@class="comment_header_right"]/b/text()')
     comment_date_parsed = dt.strptime(comment_date, "%d %b %Y").strftime("%Y-%m-%d")
 
     comment = " ".join(strip(comment_text_td.xpath('text()')))
@@ -90,9 +90,9 @@ def process_entry(entry_id):
   entry_name = entry_name.replace(';', ',')
 
   [manufacturer, category] = artwork_info.xpath('b/text()')
-  [user_id, _] = artwork_info.xpath('a[@class="userProfile"]/@uid') 
+  [user_id, _] = artwork_info.xpath('a[@class="userProfile"]/@uid')
   user_name = artwork_info.xpath('a[@class="userProfile"]/text()')[-1]
- 
+
   [entry_date, vote_count, view_count] = artwork_info.xpath('span[@class="socialLink"]/b/text()')
   entry_date_parsed = dt.strptime(entry_date, "%d %b %Y").strftime("%Y-%m-%d")
 
@@ -100,10 +100,7 @@ def process_entry(entry_id):
 
   [entry_image_url] = submission.xpath('//img[@id="artworkIMG"]/@src')
 
-  if entry_image_url.startswith('http://www.coolminiornot.com/pics/'):
-    entry_image = entry_image_url.split('/')[-1]
-  else:
-    entry_image = entry_image_url
+  entry_image = entry_image_url
 
   ebay_forms = submission.xpath('.//form')
   if len(ebay_forms) == 1:
@@ -142,15 +139,16 @@ def process_entry(entry_id):
         with open(sub_file_path, "r") as sub_file:
           sub_page = sub_file.read()
       except IOError:
-        continue 
+        continue
       sub_tree = html.fromstring(sub_page)
       process_comments(f"{entry_id}/{dir_content}/{index_file}", entry_id, sub_tree)
-   
-entries = list(get_entries())
+
+entries = get_entries()[:1000]
 results = []
 bad_entries = open('bad_entries.txt', 'a')
 
 l = len(entries)
+print(f"Total: {l}")
 helper.printProgressBar(0, l, prefix='Progress:', suffix='Complete', length=50)
 for i, entry in enumerate(entries):
   try:
