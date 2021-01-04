@@ -30,8 +30,7 @@ def eval(name, df):
   #   print(col)
   #   print(df[col].unique())
 
-#submissions = read('data/cool_mini_or_not_submissions.csv')
-submissions = read('submissions_url_fixed.csv')
+submissions = read('data/cool_mini_or_not_submissions.csv')
 comments = read('data/cool_mini_or_not_comments.csv')
 
 submissions['entry_date'] = pd.to_datetime(submissions['entry_date'], errors='coerce')
@@ -60,7 +59,6 @@ def most_common_words(df):
 #    .apply(remove_duplicates) \
 
 def plot_submission_counts_per_day_of_the_year():
-  global submissions
   submission_counts = submissions['entry_date']\
     .groupby([submissions['entry_date'].dt.month, \
               submissions['entry_date'].dt.day]).count()
@@ -93,33 +91,26 @@ def eval_mcw():
   print(mcb)
   print('---')
 
+def calc_correlations():
+  table = pd.pivot_table( \
+            comments, \
+            values='vote', \
+            index='commenter_user_name', \
+            columns='entry_id', \
+            aggfunc=max)
+  table.to_csv('data/commenter_entry_vote_pivot.csv', index=False)
+  corr_tab = table.corr()
+  corr_tab.to_csv('data/entry_correlations.csv', index=False)
 
-# table = pd.pivot_table( \
-#           comments, \
-#           values='vote', \
-#           index='commenter_user_name', \
-#           columns='entry_id', \
-#           aggfunc=max)
-# # table.to_csv('pivot.csv', index=False)
-# print(table)
-#
-# corr_tab = table.corr()
-# corr_tab.to_csv('corr_pivot.csv', index=False)
-# print(corr_tab)
 
-#result = submissions.to_json(orient="index")
-#parsed = json.loads(result)
-#
-#new_parsed = {}
-#
-#for k in parsed:
-#  new_parsed[parsed[k]["entry_id"]] = parsed[k]
-#
-#a = json.dumps(new_parsed, indent=4)
-#
-#with open("submissions.json", "w") as text_file:
-#    text_file.write(a)
+def get_submissions_json():
+  result = submissions.to_json(orient="index")
+  parsed = json.loads(result)
+  new_parsed = {}
+  for k in parsed:
+    new_parsed[parsed[k]["entry_id"]] = parsed[k]
+  json_result = json.dumps(new_parsed, indent=4)
+  with open("data/submissions.json", "w") as text_file:
+      text_file.write(json_result)
 
-corr_tab = pd.read_csv("data/corr_pivot.csv")
-print(corr_tab.head())
-
+get_submissions_json()
