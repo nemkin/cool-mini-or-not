@@ -9,8 +9,8 @@ from datetime import datetime as dt
 from lxml import html
 from lxml import etree
 
-#location = "/home/nemkin/Mount/drive/Wayback"
-location = "/home/nemkin/Mount/drive/Wget/www.coolminiornot.com"
+location = "/home/nemkin/Mount/drive/Wayback"
+#location = "/home/nemkin/Mount/drive/Wget/www.coolminiornot.com"
 index_file = "index.html"
 
 submissions = []
@@ -70,13 +70,15 @@ def process_entry(entry_id):
   try:
     with open(main_file_path, "r") as main_file:
       main_page = main_file.read()
-  except IOError:
+  except IOError as e:
+    print(f"IOError during opening main file path: {e}")
+    print()
     return
 
   try:
     tree = html.fromstring(main_page)
   except:
-    print(entry_id, main_page)
+    print(f"Can't get HTML tree for {entry_id} with page {main_page}")
     print()
     return
 
@@ -85,7 +87,8 @@ def process_entry(entry_id):
 
   try:
     [entry_name] = artwork_info.xpath('b/u/text()')
-  except:
+  except Exception as e:
+    print(f"Error during name parse: {e}")
     entry_name = ""
   entry_name = entry_name.replace(';', ',')
 
@@ -138,16 +141,19 @@ def process_entry(entry_id):
       try:
         with open(sub_file_path, "r") as sub_file:
           sub_page = sub_file.read()
-      except IOError:
+      except IOError as e:
+        print(f"IOError during subpage html file opening: {e}")
+        print()
         continue
       sub_tree = html.fromstring(sub_page)
       process_comments(f"{entry_id}/{dir_content}/{index_file}", entry_id, sub_tree)
 
-entries = get_entries()[:1000]
+entries = get_entries()
 results = []
 bad_entries = open('bad_entries.txt', 'a')
 
 l = len(entries)
+print(entries)
 print(f"Total: {l}")
 helper.printProgressBar(0, l, prefix='Progress:', suffix='Complete', length=50)
 for i, entry in enumerate(entries):
