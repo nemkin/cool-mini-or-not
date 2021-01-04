@@ -101,6 +101,6 @@ table = pd.pivot_table( \
 print(table)
 
 corr_tab = table.corr()
-table.to_csv('corr_pivot.csv', index=False)
+corr_tab.to_csv('corr_pivot.csv', index=False)
 print(corr_tab)
 
