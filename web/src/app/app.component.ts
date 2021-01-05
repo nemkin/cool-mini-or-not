@@ -9,7 +9,8 @@ import { Submission, Submissions } from './interfaces/submission';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'Cool Mini Or Not Voter';
+  isLoading = true;
+  title = 'Cool Mini Or Not Homework';
   submissions$: Observable<Submissions>;
   current$: Observable<Submission> = new Observable<Submission>();
 
@@ -19,8 +20,12 @@ export class AppComponent {
   }
 
   selectRandomSubmission(): void {
+    this.isLoading = true;
     this.submissions$.subscribe((data) => {
-      this.current$ = of(data['363638']);
+      var keys = Object.keys(data);
+      var random = keys[(keys.length * Math.random()) << 0];
+      this.current$ = of(data[random]);
+      this.isLoading = false;
     });
   }
 }
