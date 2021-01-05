@@ -122,14 +122,16 @@ export class AppComponent {
   }
 
   selectRandomSubmission(): void {
-    var random = this.entryIdsWithCorrelations[
-      (this.entryIdsWithCorrelations.length * Math.random()) << 0
-    ];
-    this.selectSubmission(random);
+    if (this.entryIdsWithCorrelations) {
+      var random = this.entryIdsWithCorrelations[
+        (this.entryIdsWithCorrelations.length * Math.random()) << 0
+      ];
+      this.selectSubmission(random);
+    }
   }
 
   selectSubmission(entry_id: string): void {
-    if (this.submissions && this.entryIdsWithCorrelations) {
+    if (this.submissions) {
       this.isCurrentSubmissionLoading = true;
       this.currentVote = 0;
       this.current = this.submissions[entry_id];
