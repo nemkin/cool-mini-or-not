@@ -73,8 +73,8 @@ lehet feltölteni, a többi felhasználó pedig szavazhat és kommentelhet a fot
 
 \section{Adathalmaz letöltése}
 
-Az első feladat a weboldal adatainak a kinyerése volt. Ez általában egy nehézkes és körülményes feladat. Nagy
-méretű adathalmazról van szó, több 10 GB-nyi adat, melyet napokon keresztül tudunk csak letölteni. Általában a
+Az első feladat a weboldal adatainak a kinyerése volt, ez általában egy nehézkes és körülményes feladat. Nagy
+méretű adathalmazról van szó, több 10 GB-nyi adatról, melyet napokon keresztül tudunk csak letölteni. Általában a
 weboldalak üzemeltetői nem szeretik az ilyen jellegű letöltéseket, ezért előfordulhat, hogy blokkolják az IP
 címünket (például DDOS támadásnak hiszik a letöltést).
 
@@ -100,13 +100,13 @@ A következő csv fájlokat hoztam létre:
 
 \paragraph{Submissions}
 
-A submissions fájl tartalmazza soronként 1-1 feltöltött mini adatait:
+A submissions fájl tartalmazza soronként 1-1 feltöltött mini adatait, a következő feldolgozott paraméterekkel:
 
 \begin{itemize}
 \item entry\_id
 \item entry\_date
 \item entry\_name
-\item entry\_image: A képhez tartozó url cím.
+\item entry\_image
 \item user\_id
 \item user\_name
 \item manufacturer
@@ -115,6 +115,10 @@ A submissions fájl tartalmazza soronként 1-1 feltöltött mini adatait:
 \item vote\_count
 \item vote\_average
 \end{itemize}
+
+A fájl
+\href{https://raw.githubusercontent.com/nemkin/cool-mini-or-not/main/data/cool\_mini\_or\_not\_submissions.csv}{ezen a linken}
+tölthető le.
 
 \begin{figure}[H]
 \centering
@@ -137,6 +141,10 @@ melyik feltöltéshez érkezett:
 \item comment
 \end{itemize}
 
+A fájl
+\href{https://raw.githubusercontent.com/nemkin/cool-mini-or-not/main/data/cool\_mini\_or\_not\_comments.csv}{ezen a linken}
+tölthető le.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=1.0\columnwidth]{pics/csv_comments.png}
@@ -157,6 +165,10 @@ adathalmazban rögzítettem.
 \item ebay\_end\_date
 \end{itemize}
 
+A fájl
+\href{https://raw.githubusercontent.com/nemkin/cool-mini-or-not/main/data/cool\_mini\_or\_not\_ebay.csv}{ezen a linken}
+tölthető le.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=1.0\columnwidth]{pics/csv_ebay.png}
@@ -165,8 +177,8 @@ adathalmazban rögzítettem.
 
 \section{Online ajánlórendszer}
 
-Az ajánlórendszer Item-based Collaborative Filtering alapon működik az ajánlórendszerek házihoz megosztott
-Recommender Systems, \cite{sammut_encyclopedia_2010} könyvből vett fejezet és az ott hivatkozott
+Az ajánlórendszer Item-based Collaborative Filtering alapon működik, az ajánlórendszerek házihoz megosztott
+\cite{sammut_encyclopedia_2010} könyvből vett Recommender Systems fejezet és az ott hivatkozott
 \cite{linden_smith_york_2003} cikk alapján.
 
 Ennek célja, hogy online, real-time képesek legyünk miniket ajánlani egy felhasználónak, miközben a miniket értékeli.
@@ -177,7 +189,7 @@ mely
 \href{https://raw.githubusercontent.com/nemkin/cool-mini-or-not/main/data/correlations.json}{ezen a linken}
 tekinthető meg.
 
-Látható, hogy sok mininek 1.0, illetve -1.0 a korrelációja, ez abból adódik, hogy egyetlen felhasználó
+Látható, hogy sok mininek 1.0 a korrelációja, ez abból adódik, hogy egyetlen felhasználó
 a kapcsolat közöttük, ez a felhasználó pedig ugyanazt a szavazatot adta mindkét minire.
 
 Az ajánlórendszerhez készült egy egyszerű Angular-os weboldal, mely így néz ki:
@@ -199,20 +211,24 @@ beküldés. A számolások részeredményeit a konzolban lehet nyomonkövetni.
 
 A félév során nagyon sokat tanultam a feladat elkészítése során.
 
-A letöltés sokkal bonyolultabb lett mint amire számítottam: A letöltött weboldalak néha teljesen másképp néztek ki
-mint az élesek, például a kommentszekciót a wget teljesen kihagyta. A törött linkek nagyon sok problémát jelentettek,
-amiket nagyon körülményes volt kijavítani, van ahol nem is sikerült (valószínűleg elmozgatták azokat a képeket az éles
-website-on). Az adathalmaz méretéből fakadóan meg kellett oldani, hogy 2 héten keresztül zavartalanul fusson a letöltő,
-problémát okozott például egy kiment biztosíték, ami miatt előről kellett kezdeni a letöltést. Az adatok mérete
-szerencsére körülbelül 100 GB volt, de más adathalmaz esetében ebből is lehetett volna probléma. Emellett szerencsére
-nem tiltották le az IP címemet, még mindig elérem a weboldalt, pedig más weboldalak esetében ez is megtörténhetett volna.
+A letöltés sokkal bonyolultabb lett mint amire számítottam:
+
+A letöltött weboldalak néha teljesen másképp néztek ki mint az élesek, például a kommentszekciót a wget teljesen
+kihagyta. A törött linkek nagyon sok problémát jelentettek, amiket nagyon körülményes volt kijavítani, van ahol nem is
+sikerült (valószínűleg elmozgatták azokat a képeket az éles website-on). Az adathalmaz méretéből fakadóan meg kellett
+oldani, hogy 2 héten keresztül zavartalanul fusson a letöltő, problémát okozott például egy kiment biztosíték, ami
+miatt előről kellett kezdeni a letöltést.
+
+Az adatok mérete szerencsére csak körülbelül 100 GB volt, de más adathalmaz esetében ebből is lehetett volna probléma.
+Emellett szerencsére nem tiltották le az IP címemet, még mindig elérem a weboldalt, pedig más weboldalak esetében
+ez is megtörténhetett volna.
 
 Az adatelemzés közben próbáltam különféle összefüggéseket találni az adatokban, rajzoltam grafikonokat, szavak
 darabszámát elemeztem, ezen kódok egy része a
 \href{https://github.com/nemkin/cool-mini-or-not/blob/main/python/analysis.py}{\url{https://github.com/nemkin/cool-mini-or-not/blob/main/python/analysis.py}}
 linken megtalálható. A problémát az jelentette, hogy nem igazán találtam érdekes összefüggést, amelynek mentén el
 lehetett volna indulni. Nem találtam olyan attribútumot az adathalmazban ami jelentősen meghatározta volna
-a szavazatok alakulását, ez várható is volt hiszen a festés minősége a fő döntő elem.
+a szavazatok alakulását, ez várható is volt hiszen a festés minősége a fő döntő szempont az értékeléseknél.
 
 Ezért végül egy ajánlórendszer elkészítése mellett döntöttem a szavazatok és a képek alapján. Itt szerettem volna
 valamilyen interaktív megoldást adni, ezért választottam az Item-based Collaborative Filtering módszert, mert azzal
