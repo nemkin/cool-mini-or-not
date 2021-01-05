@@ -30,8 +30,8 @@ def eval(name, df):
   #   print(col)
   #   print(df[col].unique())
 
-submissions = read('data/cool_mini_or_not_submissions.csv')
-comments = read('data/cool_mini_or_not_comments.csv')
+submissions = read('../data/cool_mini_or_not_submissions.csv')
+comments = read('../data/cool_mini_or_not_comments.csv')
 
 submissions['entry_date'] = pd.to_datetime(submissions['entry_date'], errors='coerce')
 comments['comment_date'] = pd.to_datetime(comments['comment_date'], errors='coerce')
@@ -64,15 +64,15 @@ def plot_submission_counts_per_day_of_the_year():
               submissions['entry_date'].dt.day]).count()
   plot = submission_counts.plot(kind='bar')
   plot.figure.set_size_inches(60, 30)
-  plot.figure.savefig('results/submission_counts_per_day_of_the_year.png', dpi=200)
+  plot.figure.savefig('../data/submission_counts_per_day_of_the_year.png', dpi=200)
 
 def other_plots():
   # Értékelések eloszlása a beküldéseken:
   submissions[['vote_average']].hist(column='vote_average', bins=10)
-  plt.savefig('results/vote_average_histogram.png', dpi=200)
+  plt.savefig('../data/vote_average_histogram.png', dpi=200)
   # Az adott értékelésű beküldéseket milyen gyakran nézték meg:
   submissions.plot.scatter(x='vote_average', y='view_count')
-  plt.savefig('results/vote_average_view_count_scatter.png', dpi=200)
+  plt.savefig('../data/vote_average_view_count_scatter.png', dpi=200)
   # Az adott értékelésű beküldésekre milyen konkrét egyedi értékelések jöttek:
   # joined.plot.scatter(x='vote_average', y='vote') # Float is bad
   # Beküldések darabszáma kategóriánként:
@@ -98,9 +98,9 @@ def calc_correlations():
             index='commenter_user_name', \
             columns='entry_id', \
             aggfunc=max)
-  table.to_csv('data/commenter_entry_vote_pivot.csv', index=False)
+  table.to_csv('../data/commenter_entry_vote_pivot.csv', index=False)
   corr_tab = table.corr()
-  corr_tab.to_csv('data/entry_correlations.csv', index=False)
+  corr_tab.to_csv('../data/entry_correlations.csv', index=False)
 
 
 def get_submissions_json():
@@ -110,7 +110,7 @@ def get_submissions_json():
   for k in parsed:
     new_parsed[parsed[k]["entry_id"]] = parsed[k]
   json_result = json.dumps(new_parsed, indent=4)
-  with open("data/submissions.json", "w") as text_file:
+  with open("../data/submissions.json", "w") as text_file:
       text_file.write(json_result)
 
 get_submissions_json()

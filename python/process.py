@@ -150,7 +150,7 @@ def process_entry(entry_id):
 
 entries = get_entries()
 results = []
-bad_entries = open('bad_entries.txt', 'a')
+bad_entries = open('../data/bad_entries.txt', 'a')
 
 l = len(entries)
 print(entries)
@@ -189,7 +189,7 @@ comments_df = pd.DataFrame(
       "commenter_user_name", "vote", "comment"
   ])
 
-submissions_df.to_csv("data/cool_mini_or_not_submissions.csv")
-ebay_df.to_csv("data/cool_mini_or_not_ebay.csv")
-comments_df.to_csv("data/cool_mini_or_not_comments.csv")
+submissions_df.to_csv("../data/cool_mini_or_not_submissions.csv")
+ebay_df.to_csv("../data/cool_mini_or_not_ebay.csv")
+comments_df.to_csv("../data/cool_mini_or_not_comments.csv")
 
