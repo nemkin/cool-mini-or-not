@@ -1,30 +1,47 @@
 <div class="main">
-  <button (click)="selectRandomSubmission()">Next</button>
-  <div
-    class="current"
-    *ngIf="isLoading ? null : (current$ | async) as current; else loading"
-  >
-    <h1>
-      {{ current.entry_name }} (<a
-        [href]="'http://www.coolminiornot.com/' + current.entry_id"
-        target="_blank"
-        >{{ current.entry_id }}</a
-      >) by {{ current.user_name }}
-    </h1>
-    <div class="current-content">
-      <div>
-        <img [src]="current.entry_image" />
+  <div class="button-row">
+    <button (click)="selectRandomSubmission()">Next</button>
+    <button (click)="selectRandomSubmission()">Random</button>
+  </div>
+  <div class="current-container">
+    <div
+      class="current"
+      *ngIf="isLoading ? null : (current$ | async) as current; else loading"
+    >
+      <h1>
+        {{ current.entry_name }} (<a
+          [href]="'http://www.coolminiornot.com/' + current.entry_id"
+          target="_blank"
+          >{{ current.entry_id }}</a
+        >) by {{ current.user_name }}
+      </h1>
+      <div class="vote-row">
+        <button
+          (click)="voteOnCurrent(index + 1)"
+          class="vote-button"
+          [ngClass]="
+            index + 1 == currentVote ? 'voted-button' : 'non-voted-button'
+          "
+          *ngFor="let a of votes; let index = index"
+        >
+          {{ index + 1 }}
+        </button>
       </div>
-      <div>
-        <div>Entry date: {{ current.entry_date | date }}</div>
-        <div>Manufacturer: {{ current.manufacturer }}</div>
-        <div>Category: {{ current.category }}</div>
-        <div>View count: {{ current.view_count }}</div>
-        <div>Vote count: {{ current.vote_count }}</div>
-        <div>Vote average: {{ current.vote_average }}</div>
+      <div class="current-content">
+        <div>
+          <img class="image" [src]="current.entry_image" />
+        </div>
+        <div>
+          <div>Entry date: {{ current.entry_date | date }}</div>
+          <div>Manufacturer: {{ current.manufacturer }}</div>
+          <div>Category: {{ current.category }}</div>
+          <div>View count: {{ current.view_count }}</div>
+          <div>Vote count: {{ current.vote_count }}</div>
+          <div>Vote average: {{ current.vote_average }}</div>
+        </div>
       </div>
     </div>
+    <ng-template #loading>Loading...</ng-template>
   </div>
-  <ng-template #loading> Loading... </ng-template>
 </div>
 <router-outlet></router-outlet>

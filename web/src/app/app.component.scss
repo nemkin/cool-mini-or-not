@@ -8,3 +8,27 @@
   display: flex;
   gap: 30px;
 }
+.button-row {
+  display: flex;
+  gap: 30px;
+}
+.vote-row {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+.vote-button {
+  width: 50px;
+  height: 50px;
+}
+.current-container {
+  margin: 30px 0;
+}
+.image {
+  max-width: 1000px;
+}
+.voted-button {
+  background-color: red;
+}
+.non-voted-button {
+}

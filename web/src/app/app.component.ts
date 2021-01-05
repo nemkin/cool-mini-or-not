@@ -11,6 +11,8 @@ import { Submission, Submissions } from './interfaces/submission';
 export class AppComponent {
   isLoading = true;
   title = 'Cool Mini Or Not Homework';
+  votes = new Array(10);
+  currentVote = 0;
   submissions$: Observable<Submissions>;
   current$: Observable<Submission> = new Observable<Submission>();
 
@@ -19,6 +21,10 @@ export class AppComponent {
     this.selectRandomSubmission();
   }
 
+  voteOnCurrent(vote: number) {
+    this.currentVote = vote;
+    console.log(`Voted: ${vote}`);
+  }
   selectRandomSubmission(): void {
     this.isLoading = true;
     this.submissions$.subscribe((data) => {
