@@ -133,6 +133,7 @@ export class AppComponent {
   selectSubmission(entry_id: string): void {
     if (this.submissions) {
       this.isCurrentSubmissionLoading = true;
+      this.current.entry_image = '';
       this.currentVote = 0;
       this.current = this.submissions[entry_id];
       var savedVote = localStorage.getItem(this.current['entry_id']);
