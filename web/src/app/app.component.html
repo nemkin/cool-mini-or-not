@@ -1,11 +1,21 @@
 <div class="main">
   <div class="button-row">
-    <button (click)="selectRandomSubmission()">Next</button>
-    <button (click)="selectRandomSubmission()">Random</button>
+    <button (click)="selectNextSubmission()" [disabled]="isCorrelationsLoading">
+      Next
+    </button>
+    <button
+      (click)="selectRandomSubmission()"
+      [disabled]="isCorrelationsLoading"
+    >
+      Random
+    </button>
     <button (click)="resetVotes()">Reset Votes</button>
   </div>
   <div class="current-container">
-    <div class="current" *ngIf="isLoading ? null : current; else loading">
+    <div
+      class="current"
+      *ngIf="isCurrentSubmissionLoading ? null : current; else loading"
+    >
       <h1>
         {{ current.entry_name }} (<a
           [href]="'http://www.coolminiornot.com/' + current.entry_id"
