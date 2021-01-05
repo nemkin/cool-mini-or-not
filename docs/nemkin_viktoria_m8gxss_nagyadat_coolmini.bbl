@@ -1,0 +1,20 @@
+\begin{thebibliography}{2}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Linden et~al.(2003)Linden, Smith, and York]{linden_smith_york_2003}
+Greg Linden, B.~Smith, and J.~York.
+\newblock Amazon.com recommendations: item-to-item collaborative filtering.
+\newblock \emph{Internet Computing, IEEE}, 7:\penalty0 76 -- 80, 02 2003.
+\newblock \doi{10.1109/MIC.2003.1167344}.
+
+\bibitem[Sammut and Webb(2010)]{sammut_encyclopedia_2010}
+Claude Sammut and Geoffrey~I. Webb, editors.
+\newblock \emph{Encyclopedia of machine learning}.
+\newblock Springer, New York; London, 2010.
+\newblock ISBN 978-0-387-30768-8.
+
+\end{thebibliography}
